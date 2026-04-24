@@ -8,29 +8,36 @@ function App() {
 
   const [prediction, setPrediction] = useState(null);
   const [shortage, setShortage] = useState(null);
+  const [severity, setSeverity] = useState("");
+  const [impact, setImpact] = useState("");
+  const [recommendation, setRecommendation] = useState("");
 
   const handlePredict = async () => {
-  const response = await fetch("http://127.0.0.1:5000/predict", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      task_type: taskType,
-      requests: Number(requests),
-      urgency: Number(urgency),
-    }),
-  });
+    const response = await fetch("http://127.0.0.1:5000/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        task_type: taskType,
+        requests: Number(requests),
+        urgency: Number(urgency),
+        available: Number(available)
+      })
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  setPrediction(data.predicted_volunteers);
-  setShortage(data.predicted_volunteers - Number(available));
-};
+    setPrediction(data.predicted_volunteers);
+    setShortage(data.shortage);
+    setSeverity(data.severity);
+    setImpact(data.impact);
+    setRecommendation(data.recommendation);
+  };
 
   return (
     <div style={{ padding: "30px", fontFamily: "Arial" }}>
-      <h1>Volunteer Demand Predictor</h1>
+      <h1>AI Crisis Resource Orchestrator</h1>
 
       <div>
         <label>Task Type:</label><br />
@@ -79,11 +86,14 @@ function App() {
 
       <button onClick={handlePredict}>Predict</button>
 
-      {prediction && (
+      {prediction !== null && (
         <div style={{ marginTop: "30px" }}>
           <h2>Prediction Result</h2>
           <p><strong>Predicted Volunteers Needed:</strong> {prediction}</p>
-          <p><strong>Additional Volunteers Required:</strong> {shortage}</p>
+          <p><strong>Volunteer Shortage:</strong> {shortage}</p>
+          <p><strong>Severity Level:</strong> {severity}</p>
+          <p><strong>Estimated Impact:</strong> {impact} people at risk</p>
+          <p><strong>Recommendation:</strong> {recommendation}</p>
         </div>
       )}
     </div>
