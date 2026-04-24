@@ -9,11 +9,24 @@ function App() {
   const [prediction, setPrediction] = useState(null);
   const [shortage, setShortage] = useState(null);
 
-  const handlePredict = () => {
-    const predicted = 23; // fake prediction
-    setPrediction(predicted);
-    setShortage(predicted - available);
-  };
+  const handlePredict = async () => {
+  const response = await fetch("http://127.0.0.1:5000/predict", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      task_type: taskType,
+      requests: Number(requests),
+      urgency: Number(urgency),
+    }),
+  });
+
+  const data = await response.json();
+
+  setPrediction(data.predicted_volunteers);
+  setShortage(data.predicted_volunteers - Number(available));
+};
 
   return (
     <div style={{ padding: "30px", fontFamily: "Arial" }}>
