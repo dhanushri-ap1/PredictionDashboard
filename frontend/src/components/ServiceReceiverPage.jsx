@@ -443,6 +443,26 @@ function NGODetailPage({ ngo, onBack }) {
               ))}
             </div>
 
+            {/* Embedded Google Map */}
+            <div>
+              <h3 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>Location View</h3>
+              <div style={{ 
+                width: '100%', height: '240px', borderRadius: 'var(--radius-lg)', 
+                overflow: 'hidden', border: '1px solid var(--border-color)',
+                boxShadow: 'var(--shadow-sm)'
+              }}>
+                <iframe
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  style={{ border: 0 }}
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(ngo.name + ' ' + ngo.address)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                  allowFullScreen
+                  title="NGO Location Map"
+                ></iframe>
+              </div>
+            </div>
+
             {/* Services */}
             <div>
               <h3 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '12px' }}>Services Provided</h3>
@@ -461,33 +481,55 @@ function NGODetailPage({ ngo, onBack }) {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <a
-                href={`tel:${ngo.phone}`}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                  padding: '14px', borderRadius: 'var(--radius-lg)',
-                  background: 'var(--brand-teal-600)', color: 'white',
-                  fontSize: '15px', fontWeight: 600, textDecoration: 'none',
-                  transition: 'all 0.2s', boxShadow: 'var(--shadow-teal)'
-                }}
-              >
-                <Phone size={16} /> Call Now
-              </a>
-              <a
-                href={`https://${ngo.website}`}
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(ngo.name + ', ' + ngo.address)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                  padding: '14px', borderRadius: 'var(--radius-lg)',
-                  background: 'var(--bg-subtle)', color: 'var(--text-primary)',
-                  fontSize: '15px', fontWeight: 600, textDecoration: 'none',
-                  border: '1px solid var(--border-color)', transition: 'all 0.2s'
+                  padding: '16px', borderRadius: 'var(--radius-lg)',
+                  background: 'var(--brand-blue-600)', color: 'white',
+                  fontSize: '16px', fontWeight: 600, textDecoration: 'none',
+                  transition: 'transform 0.2s, box-shadow 0.2s', boxShadow: 'var(--shadow-md)'
                 }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
               >
-                <Globe size={16} /> Visit Website
+                <MapPin size={18} /> Get Directions
               </a>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <a
+                  href={`tel:${ngo.phone}`}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    padding: '14px', borderRadius: 'var(--radius-lg)',
+                    background: 'var(--brand-teal-600)', color: 'white',
+                    fontSize: '15px', fontWeight: 600, textDecoration: 'none',
+                    transition: 'all 0.2s', boxShadow: 'var(--shadow-sm)'
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <Phone size={16} /> Call Now
+                </a>
+                <a
+                  href={`https://${ngo.website}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    padding: '14px', borderRadius: 'var(--radius-lg)',
+                    background: 'var(--bg-subtle)', color: 'var(--text-primary)',
+                    fontSize: '15px', fontWeight: 600, textDecoration: 'none',
+                    border: '1px solid var(--border-color)', transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-1px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  <Globe size={16} /> Visit Website
+                </a>
+              </div>
             </div>
           </div>
         </div>
